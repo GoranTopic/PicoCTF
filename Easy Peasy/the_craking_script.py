@@ -55,7 +55,7 @@ for i, j in zip(range(0, len(encrypted_user_input),2), range(0, len(user_input))
     ui_int = ord(ui_char)
     # calculate the key with the unhexed value and the ui_int
     key_int = unhexed ^ ui_int
-    print("     {:08b} <- ui\n \
+    print("     {:08b} <- ui\n\
 xor {:08b} <- ecrypted ui\n\
     ------------\n\
      {:08b} <- key value\n".format(ui_int, unhexed, key_int))
@@ -65,6 +65,20 @@ xor {:08b} <- ecrypted ui\n\
 key = "".join(list(map(lambda num: str(num), key_arr)))
 print("\nthe key is: {}".format("".join(key)))
 
+# use the found key to decrypt the flag
+flag_values = []
+for i, j in zip(range(0, encrypted_flag_len,2), range(0, len(user_input))):
+    hexed = encrypted_flag[i:i+2] # get the next two chars
+    unhexed = int(hexed, 16) # read hexadecimal as a int
+    #print("{} = {:08b} = {:d}".format(hexed, unhexed, unhexed)) 
+    key_value = key_chars[kindex]
+    kindex += 1
+    flag_value = unhexed ^ key_value
+    print("unhexed: {:08b} ^ Key: {:08b} = flag: {:08b} : {}"
+            .format(unhexed, key_value, flag_value, flag_value))
+    flag_values.append(chr(flag_value))
+flag = "".join(flag_values)
+print("\nthe flag is {}".format("".join(flag)))
 
 
 #print("{:08b} : ecnypted ui\n {:08b} : ui \n------------------------\n{:08b} : key".format(encrypted_ui, str(hex_ui, key)))
